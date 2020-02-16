@@ -9,7 +9,7 @@ class Settings():
 
         # 飞船的设置
         self.ship_speed_factor = 1.5
-        self.ship_photo_path = 'E:\python文档\Alien_Invasion\images\Ship.bmp'
+        self.ship_photo_path = '.\Alien_Invasion\images\Ship.bmp'
 
         # 子弹的设置
         self.bullet_speed_factor = 1
