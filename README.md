@@ -12,5 +12,5 @@
 
 ---
 
-python version: 3.7.3
+python version: 3.7.3  
 pygame version: 1.9.6
