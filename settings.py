@@ -17,7 +17,7 @@ class Settings():
         # 子弹的设置
         # self.bullet_width = self.screen_width
         self.bullet_width = 3
-        self.bullet_height = 15
+        self.bullet_width_scale = 200 # 外挂，增加子弹的宽度
         self.bullet_color = (0, 0, 255)
         self.bullets_allowed = 3
 
@@ -35,6 +35,7 @@ class Settings():
         """初始化随游戏进行而变化的设置"""
         self.alien_speed_factor = 0.5
         self.bullet_speed_factor = 4
+        self.bullet_height = 15
         self.ship_speed_factor = 2
         # 计分
         self.alien_points = 50
@@ -53,4 +54,14 @@ class Settings():
         self.alien_point = int(self.alien_points * self.score_scale)
         print("TIP:\n  Ship Speed: %.2f\nBullet Speed: %.2f\n Alien Speed: %.2f\nPoint %2d each alien\n" % (self.ship_speed_factor, self.bullet_speed_factor, self.alien_speed_factor, self.alien_point))
 
-a = Settings()
+    def enlarge_bullet(self):
+        """增大子弹的宽度"""
+        if self.bullet_width <= self.screen_width:
+            self.bullet_width += self.bullet_width_scale
+        print("Bullet Width: ", self.bullet_width)
+    
+    def ensmall_bullet(self):
+        """缩小子弹的宽度"""
+        if self.bullet_width > 3:
+            self.bullet_width -= self.bullet_width_scale
+        print("Bullet Width: ", self.bullet_width)

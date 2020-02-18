@@ -39,6 +39,12 @@ def check_keydown_events(event, ai_settings, screen, ship, bullets, stats):
         # 暂停游戏
         stats.game_stop = not stats.game_stop
         
+    elif event.key == pygame.K_w:
+        # 增大子弹宽度
+        ai_settings.enlarge_bullet()
+
+    elif event.key == pygame.K_s:
+        ai_settings.ensmall_bullet()
 
 def check_keyup_events(event, ship):
     """响应松开"""
@@ -223,7 +229,8 @@ def update_aliens(ai_settings, screen, ship, aliens, bullets, stats, sb):
           
 def ship_hit(ai_settings, stats, screen, ship, aliens, bullets, sb):
     """响应被外星人碰撞的飞船"""
-    if stats.ships_left > 0:
+    if stats.ships_left >= 1:
+        print(stats.ships_left)
         # 可用的船数减1
         stats.ships_left -= 1
         sb.prep_ships_love()
@@ -238,7 +245,7 @@ def ship_hit(ai_settings, stats, screen, ship, aliens, bullets, sb):
 
         # 暂停
         sleep(0.5)
-    else:
+    if stats.ships_left <= 0:
         stats.game_active = False
         pygame.mouse.set_visible(True)
 
