@@ -1,8 +1,10 @@
 import pygame
-class Ship():
+from pygame.sprite import Sprite
+class Ship(Sprite):
 
     def __init__(self, AI_settings, screen):
         """初始化飞船并设置它的位置"""
+        super(Ship, self).__init__()
         self.screen = screen
         self.ai_setting = AI_settings
 
@@ -40,3 +42,15 @@ class Ship():
     def center_ship(self):
         """让飞船在屏幕上居中"""
         self.centerx = self.screen_rect.centerx
+
+class ShipLove(Sprite):
+    """船的生命"""
+    def __init__(self, ai_settings, screen):
+        super(ShipLove, self).__init__()
+        # 加载飞船的生命图片
+        self.ai_settings = ai_settings
+        self.screen = screen
+        self.image = pygame.image.load(self.ai_settings.ship_love_photo_path)
+        self.rect = self.image.get_rect()
+       
+       
