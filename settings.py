@@ -10,6 +10,7 @@ class Settings():
         # 飞船的设置
         self.ship_speed_factor = 1.5
         self.ship_photo_path = '.\Alien_Invasion\images\Ship.bmp'
+        self.ship_limit = 3
 
         # 子弹的设置
         self.bullet_speed_factor = 1
@@ -21,5 +22,5 @@ class Settings():
         # 外星人的设置
         self.alien_photo_path = '.\Alien_Invasion\images\Alien.bmp'
         self.alien_speed_factor = 0.5
-        self.fleet_drop_speed = 1
+        self.fleet_drop_speed = 10
         self.fleet_direction = 1 # 1表示右移，-1表示左移
