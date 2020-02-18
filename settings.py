@@ -1,3 +1,4 @@
+import os
 class Settings():
     """存储《Alien Invasion》的所有设置的类"""
     def __init__(self):
@@ -8,8 +9,9 @@ class Settings():
         self.bg_color = (230, 230, 230)
 
         # 飞船的设置
-        self.ship_photo_path = '.\Alien_Invasion\images\Ship.bmp'
-        self.ship_love_photo_path = '.\Alien_Invasion\images\love.bmp'
+        self.path_str = os.path.dirname(os.path.abspath(__file__))
+        self.ship_photo_path =  self.path_str + '\images\Ship.bmp'
+        self.ship_love_photo_path = self.path_str + '\images\love.bmp'
         self.ship_limit = 3
 
         # 子弹的设置
@@ -20,7 +22,7 @@ class Settings():
         self.bullets_allowed = 3
 
         # 外星人的设置
-        self.alien_photo_path = '.\Alien_Invasion\images\Alien.bmp'
+        self.alien_photo_path =  self.path_str + '\images\Alien.bmp'
         self.fleet_drop_speed = 1
         
         # 以什么样的速度加快游戏节奏
@@ -51,3 +53,4 @@ class Settings():
         self.alien_point = int(self.alien_points * self.score_scale)
         print("TIP:\n  Ship Speed: %.2f\nBullet Speed: %.2f\n Alien Speed: %.2f\nPoint %2d each alien\n" % (self.ship_speed_factor, self.bullet_speed_factor, self.alien_speed_factor, self.alien_point))
 
+a = Settings()
