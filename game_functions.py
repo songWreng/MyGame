@@ -4,6 +4,7 @@ from bullet import Bullet
 from alien import Alien
 from time import sleep
 from button import Button
+from scoreboard import Scoreboard
 
 def fire_bullet(ai_settings, screen, ship, bullets):
     """处理飞船开火"""
@@ -45,6 +46,9 @@ def check_play_button(ai_settings,  screen, ship, aliens, bullets,
             stats, play_button, mouse_x, mouse_y):
     """在玩家单击Play按钮时开始新游戏"""
     if play_button.rect.collidepoint(mouse_x, mouse_y) and not stats.game_active:
+        # 重置游戏设置
+        ai_settings.initialize_dynamic_settings()
+
         # 隐藏光标
         pygame.mouse.set_visible(False)
 
@@ -79,7 +83,7 @@ def check_events(ai_settings, screen, ship, aliens, bullets, stats, play_button)
             check_play_button(ai_settings, screen, ship, aliens, bullets,
                     stats, play_button, mouse_x, mouse_y)
 
-def update_screen(ai_settings, screen, ship, aliens, bullets, stats, play_button):
+def update_screen(ai_settings, screen, ship, aliens, bullets, stats, play_button, sb):
     """更新屏幕上的图像，并切换到新的屏幕"""
     # 每次循环时都要重绘屏幕
     screen.fill(ai_settings.bg_color)
@@ -91,6 +95,9 @@ def update_screen(ai_settings, screen, ship, aliens, bullets, stats, play_button
     ship.blitme()
     aliens.draw(screen)
 
+    # 显示得分
+    sb.show_score()
+
     # 如果游戏处于非活动状态，就绘制Play按钮
     if not stats.game_active:
         play_button.draw_button()
@@ -98,7 +105,7 @@ def update_screen(ai_settings, screen, ship, aliens, bullets, stats, play_button
     # 让最近绘制的屏幕可见
     pygame.display.flip()
 
-def update_bullets(ai_settings, screen, ship, aliens, bullets):
+def update_bullets(ai_settings, screen, ship, aliens, bullets, stats, sb):
     """
     更新子弹的位置，并删除已消失的子弹;
     删除相撞的子弹和外星人;
@@ -112,9 +119,9 @@ def update_bullets(ai_settings, screen, ship, aliens, bullets):
         if bullet.rect.bottom <= 0:
             bullets.remove(bullet)
 
-    check_bullet_alien_collisions(ai_settings, screen, ship, aliens, bullets)
+    check_bullet_alien_collisions(ai_settings, screen, ship, aliens, bullets, stats, sb)
    
-def check_bullet_alien_collisions(ai_settings, screen, ship, aliens, bullets):
+def check_bullet_alien_collisions(ai_settings, screen, ship, aliens, bullets, stats, sb):
     """相应子弹和外星人的碰撞"""
     # 检查是否有子弹击中了外星人，如果是这样，就删除相应的子弹和外星人
     collisions = pygame.sprite.groupcollide(bullets, aliens, True, True)
@@ -122,24 +129,31 @@ def check_bullet_alien_collisions(ai_settings, screen, ship, aliens, bullets):
     # 如果想保留第一个图形(bullets)，可将第一个布尔值设为False，
     # 保留第二个图形(aliens)，可将第二个布尔值设为False
 
+    if collisions:
+        for aliens in collisions.values():
+            stats.score += ai_settings.alien_points
+            sb.prep_score()
+
     if len(aliens) == 0:
         # 删除现有的子弹并新建一群外星人
         bullets.empty()
+        ai_settings.increase_speed()
         create_fleet(ai_settings, screen, ship, aliens)
+
 
 def get_number_alien_x(ai_settings, alien_width):
     """计算每行可容纳多少个外星人"""
     available_space_x = ai_settings.screen_width - alien_width
     number_aliens_x = int(available_space_x / (2 * alien_width))
-    print("The number of aliens each line:", number_aliens_x)
-    print("Width:", alien_width)
+    # print("The number of aliens each line:", number_aliens_x)
+    # print("Width:", alien_width)
     return number_aliens_x
 
 def get_number_rows(ai_settings, ship_height, alien_height):
     """计算屏幕可容纳多少行外星人"""
     available_space_y = (ai_settings.screen_height - 3 * alien_height - ship_height)
     number_rows = int(available_space_y / (2 * alien_height))
-    print("The number of row:", number_rows)
+    # print("The number of row:", number_rows)
     return number_rows
 
 def create_alien(ai_settings, screen, aliens, alien_number, row_number):
@@ -150,7 +164,7 @@ def create_alien(ai_settings, screen, aliens, alien_number, row_number):
     alien.rect.x = alien.f_x
     alien.rect.y = alien.rect.height + 2 * alien.rect.height * row_number
     aliens.add(alien)
-    print("NO.", alien_number, "alien position:", (alien.rect.x, alien.rect.y))
+    # print("NO.", alien_number, "alien position:", (alien.rect.x, alien.rect.y))
 
 def create_fleet(ai_settings, screen, ship, aliens):
     """创建外星人群"""
