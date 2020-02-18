@@ -20,3 +20,6 @@ class Settings():
 
         # 外星人的设置
         self.alien_photo_path = '.\Alien_Invasion\images\Alien.bmp'
+        self.alien_speed_factor = 0.5
+        self.fleet_drop_speed = 1
+        self.fleet_direction = 1 # 1表示右移，-1表示左移
