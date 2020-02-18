@@ -5,7 +5,7 @@ from bullet import Bullet
 from ship import Ship
 from settings import Settings
 from game_stats import GameStats
-
+from button import Button
 def run_game():
     """游戏循环"""
 
@@ -26,15 +26,18 @@ def run_game():
     # 创建一个用于存储游戏统计信息的实例
     stats = GameStats(ai_settings)
 
+    # 创建Play按钮
+    play_button = Button(ai_settings, screen, "Play")
+
     # 开始游戏主循环
     while True:
-        gf.check_events(ai_settings, screen, ship, bullets)
+        gf.check_events(ai_settings, screen, ship, aliens, bullets, stats, play_button)
 
         if stats.game_active:
             ship.update()
             gf.update_bullets(ai_settings, screen, ship, aliens, bullets)
             gf.update_aliens(ai_settings, screen, ship, aliens, bullets, stats)
             
-        gf.update_screen(ai_settings, screen, ship, aliens, bullets)
+        gf.update_screen(ai_settings, screen, ship, aliens, bullets, stats, play_button)
 
 run_game()

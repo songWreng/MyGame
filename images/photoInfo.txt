@@ -1,2 +1,2 @@
-Ship分辨率81x120
+Ship分辨率45x66
 Alian分辨率90x66
